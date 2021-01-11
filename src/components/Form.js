@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import DOMPurify from 'dompurify';
 
 const Form = () => {
     const [quizData, setQuizData] = useState([]);
@@ -40,13 +41,12 @@ const Form = () => {
         const { question, correct_answer, incorrect_answers } = currentQuestion;
 
         let answers = [{ text: correct_answer, isCorrect: true }];
-        console.log(answers);
-        incorrect_answers.forEach((answer) =>
+        incorrect_answers.forEach((answer) => {
             answers.push({
                 text: answer,
                 isCorrect: false,
-            })
-        );
+            });
+        });
         answers.sort(() => Math.random() - 0.5);
 
         return (
@@ -54,21 +54,26 @@ const Form = () => {
                 <p className='result'>
                     Result: {result}/{currentQuestionNumber}
                 </p>
-                <p>
-                    {currentQuestionNumber + 1}. {question}
-                </p>
+                <p
+                    dangerouslySetInnerHTML={{
+                        __html: DOMPurify.sanitize(
+                            `${currentQuestionNumber + 1}. ${question}`
+                        ),
+                    }}
+                />
                 <div className='answers'>
                     {answers.map(({ text, isCorrect }, key) => (
                         <button
                             key={key}
+                            dangerouslySetInnerHTML={{
+                                __html: DOMPurify.sanitize(text),
+                            }}
                             onClick={
                                 isCorrect
                                     ? correctAnswerWasChosen
                                     : incorrectAnswerWasChosen
                             }
-                        >
-                            {text}
-                        </button>
+                        />
                     ))}
                 </div>
             </div>
