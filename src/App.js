@@ -1,5 +1,4 @@
 import React from 'react';
-import Basic from './components/Basic';
 import Form from './components/Form';
 
 const App = () => {
