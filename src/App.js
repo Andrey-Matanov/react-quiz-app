@@ -1,10 +1,27 @@
-import React from 'react';
-import Form from './components/Form';
+import React, { useState } from 'react';
+import { Route, Switch } from 'react-router-dom';
+import Menu from './components/Menu';
+import Quiz from './components/Quiz';
 
 const App = () => {
+    const [settings, setSettings] = useState({});
+    const getQuizSettings = (settings) => {
+        setSettings(settings);
+    };
+
     return (
         <div>
-            <Form />
+            <Switch>
+                <Route
+                    exact
+                    path='/'
+                    render={() => <Menu getQuizSettings={getQuizSettings} />}
+                />
+                <Route
+                    path='/quiz'
+                    render={() => <Quiz settings={settings} />}
+                />
+            </Switch>
         </div>
     );
 };
